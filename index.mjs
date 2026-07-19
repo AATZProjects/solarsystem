@@ -41,3 +41,22 @@ app.get('/planet', (req, res) => {
    console.log(planetInfo);
    res.render('planet', {planetInfo, planetName}); 
 });
+
+app.get('/NASA', async(req, res) => {
+    let currentDate = new Date();
+    console.log("Current date is: " + currentDate);
+
+    let url = 
+    `https://api.nasa.gov/planetary/apod?api_key=9mUzIkhlZCZaOoMfspg7jMmwZCZ4LiRHtkgkambD&date=${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+
+    console.log("Fetching data from: " + url);
+
+    let response = await fetch(url);
+    let data = await response.json();
+
+    let explanation = data.explanation;
+    let image = data.url;
+    let date = data.date;
+
+    res.render('nasa', {explanation, image, date});
+});
